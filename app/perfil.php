@@ -30,6 +30,7 @@ $avatars = array_diff(scandir($avatarFolder), ['.', '..']);
   <meta charset="UTF-8">
   <title>Bem-vindo</title>
   <link rel="stylesheet" href="css/perfil.css">
+  <link rel="stylesheet" href="css/menu.css" />
 </head>
 <body>
 

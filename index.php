@@ -1,9 +1,25 @@
 <?php
 session_start();
+
 $isLoggedIn = isset($_SESSION['user_id']);
-$userName = $isLoggedIn ? $_SESSION['user_name'] : 'Visitante';
-$userEmail = $isLoggedIn && isset($_SESSION['user_email']) ? $_SESSION['user_email'] : 'sem login';
+$userName   = $isLoggedIn ? $_SESSION['user_name'] : 'Visitante';
+$userEmail  = $isLoggedIn && isset($_SESSION['user_email']) ? $_SESSION['user_email'] : 'sem login';
+
+$defaultAvatar = 'img/videoframe_12215.png';
+$userAvatar = $defaultAvatar;
+
+if ($isLoggedIn && !empty($_SESSION['user_avatar'])) {
+    $avatarWebPath = $_SESSION['user_avatar']; // já está com 'avatars/img10.jpg'
+    $avatarDiskPath = __DIR__ . '/' . $avatarWebPath;
+
+    if (file_exists($avatarDiskPath)) {
+        $userAvatar = $avatarWebPath;
+    }
+}
+
+$destino = $isLoggedIn ? 'app/perfil.php' : 'app/login.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -22,7 +38,7 @@ $userEmail = $isLoggedIn && isset($_SESSION['user_email']) ? $_SESSION['user_ema
       <div id="sidebar_content">
 
         <div id="user">
-         <img src="img/videoframe_12215.png" id="user_avatar" style="cursor:pointer;"onclick="carregarTela('<?php echo $isLoggedIn ? 'app/perfil.php' : 'app/login.php'; ?>')">
+          <img src="<?php echo htmlspecialchars($userAvatar); ?>" id="user_avatar" style="cursor:pointer; width:40px; height:40px; border-radius:50%;" title="<?php echo htmlspecialchars($userName); ?>" onclick="carregarTela('<?php echo $destino; ?>')"/>
           <p id="user_infos">
             <span class="item-description"><?php echo htmlspecialchars($userName); ?></span>
              <span class="item-description"><?php echo htmlspecialchars($userEmail); ?></span>

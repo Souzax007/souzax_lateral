@@ -142,7 +142,7 @@
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form action="../conexao/login.php" method="POST">
+    <form action="./conexao/login.php" method="POST">
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Senha" required>
       <div class="submit_btn">

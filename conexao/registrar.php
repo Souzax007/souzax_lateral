@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require 'db.php';
+require 'db.php'; // Agora $conn está definido corretamente
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name     = $_POST['name'] ?? '';
@@ -18,6 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     try {
+        if (!isset($conn)) {
+            throw new Exception("Conexão com banco de dados não estabelecida.");
+        }
+
         $stmt = $conn->prepare("INSERT INTO users (name, email, password, avatar) VALUES (?, ?, ?, ?)");
         if (!$stmt) {
             throw new Exception("Erro na preparação: " . $conn->error);
@@ -26,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssss", $name, $email, $hashedPassword, $avatar);
         $stmt->execute();
 
-        header('Location: ../html/login.html');
+        header('Location: ../app/login');
         exit;
 
     } catch (mysqli_sql_exception $e) {
@@ -36,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ../index.php?erro=geral');
         }
         exit;
+    } catch (Exception $e) {
+        echo "Erro: " . $e->getMessage();
     }
 }
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 // Lista de avatares disponíveis
 $avatarFolder = '../avatars/';
 $avatars = array_diff(scandir($avatarFolder), array('.', '..'));
@@ -129,16 +130,17 @@ $avatars = array_diff(scandir($avatarFolder), array('.', '..'));
 <body>
 
   <div class="form">
-    <div class="avatar">
-      <label for="selectedAvatar">Avatar escolhido:</label>
-      <img id="previewAvatar" src="" alt="Avatar escolhido" style="display:none;">
-      <button type="button" id="openAvatarModal">Escolher Avatar</button>
-      <input type="hidden" name="avatar" id="selectedAvatar" required>
-    </div>
-
     <h2>Registrar</h2>
 
     <form id="registroForm" method="POST" action="conexao/registrar.php">
+      
+      <div class="avatar">
+        <label for="selectedAvatar">Avatar escolhido:</label>
+        <img id="previewAvatar" src="" alt="Avatar escolhido" style="display:none;">
+        <button type="button" id="openAvatarModal">Escolher Avatar</button>
+        <input type="hidden" name="avatar" id="selectedAvatar" required>
+      </div>
+
       <label>Nome:</label>
       <input type="text" name="name" required>
 
@@ -161,13 +163,45 @@ $avatars = array_diff(scandir($avatarFolder), array('.', '..'));
       <h3>Escolha seu Avatar</h3>
       <div id="avatarOptions">
         <?php foreach ($avatars as $avatar): ?>
-          <div class="avatar-option" data-avatar="<?= $avatarFolder . $avatar ?>">
-            <img src="<?= $avatarFolder . $avatar ?>" alt="Avatar">
+          <div class="avatar-option" data-avatar="avatars/<?= $avatar ?>">
+            <img src="../avatars/<?= $avatar ?>" alt="Avatar">
           </div>
         <?php endforeach; ?>
       </div>
     </div>
   </div>
+
+  <script>
+    const openModalBtn = document.getElementById('openAvatarModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const modal = document.getElementById('avatarModal');
+    const avatarOptions = document.querySelectorAll('.avatar-option');
+    const selectedAvatarInput = document.getElementById('selectedAvatar');
+    const previewAvatar = document.getElementById('previewAvatar');
+
+    openModalBtn.onclick = () => modal.style.display = 'block';
+    closeModalBtn.onclick = () => modal.style.display = 'none';
+
+    avatarOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        avatarOptions.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+
+        const avatarPath = option.getAttribute('data-avatar');
+        selectedAvatarInput.value = avatarPath;
+        previewAvatar.src = '../' + avatarPath;
+        previewAvatar.style.display = 'block';
+        modal.style.display = 'none';
+      });
+    });
+
+    // Fechar modal ao clicar fora
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
 
 </body>
 </html>
