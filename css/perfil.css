@@ -1,4 +1,3 @@
-
 .main {
   background-color: #ffffff;
   padding: 30px;
@@ -36,7 +35,6 @@ button, .btn-logout {
   overflow: hidden;
 }
 
-/* Efeito de ripple para feedback visual */
 button::after, .btn-logout::after {
   content: '';
   position: absolute;
@@ -56,9 +54,15 @@ button:active::after, .btn-logout:active::after {
 }
 
 #btnChangeAvatar {
-  background-color: #2196f3;
   color: white;
   border: 2px solid transparent;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 #btnChangeAvatar:hover {
@@ -89,66 +93,50 @@ button:active::after, .btn-logout:active::after {
   box-shadow: 0 2px 8px rgba(244, 67, 54, 0.4);
 }
 
-/* Estados de foco para acessibilidade */
 button:focus, .btn-logout:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
 }
 
-/* Modal */
-#modal {
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  padding: 20px;
-  box-sizing: border-box;
-}
+ .modal {
+      display: none;
+      position: fixed;
+      top: 0; 
+      left: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 9999;
+    }
 
-#modal.active {
-  display: flex;
-}
+.modal.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-#modal-content {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 16px;
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
-}
+.modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      position: relative;
+    }
 
-#modal-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #999;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  min-width: 44px;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
 
-#modal-close:hover {
-  color: #333;
-  background-color: rgba(0, 0, 0, 0.1);
-}
+.close:hover {
+      color: #000;
+    }
 
 .avatar-grid {
   display: grid;
@@ -178,17 +166,10 @@ button:focus, .btn-logout:focus {
 
 /* Responsividade para Mobile */
 @media (max-width: 768px) {
-  body {
-    padding: 10px;
-    align-items: flex-start;
-    padding-top: 20px;
-  }
-
   .main {
     padding: 25px 20px;
     width: 100%;
     max-width: 100%;
-    min-width: 320px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
   }
@@ -201,14 +182,6 @@ button:focus, .btn-logout:focus {
   .main h2 {
     font-size: 1.3rem;
     margin-bottom: 15px;
-  }
-
-  button, .btn-logout {
-    font-size: 16px;
-    padding: 14px 24px;
-    margin: 10px 0;
-    max-width: 100%;
-    min-height: 48px;
   }
 
   #modal {
@@ -239,12 +212,7 @@ button:focus, .btn-logout:focus {
   }
 }
 
-/* Responsividade para telas muito pequenas */
 @media (max-width: 480px) {
-  body {
-    padding: 5px;
-    padding-top: 15px;
-  }
 
   .main {
     padding: 20px 15px;
@@ -260,13 +228,6 @@ button:focus, .btn-logout:focus {
   .main h2 {
     font-size: 1.2rem;
     margin-bottom: 12px;
-  }
-
-  button, .btn-logout {
-    font-size: 15px;
-    padding: 12px 20px;
-    margin: 8px 0;
-    border-radius: 6px;
   }
 
   #modal-content {
@@ -286,7 +247,6 @@ button:focus, .btn-logout:focus {
   }
 }
 
-/* Melhorias para telas de alta densidade (Retina) */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .main img, .avatar-grid img {
     image-rendering: -webkit-optimize-contrast;
@@ -294,11 +254,9 @@ button:focus, .btn-logout:focus {
   }
 }
 
-/* Modo paisagem para dispositivos móveis */
 @media (max-width: 768px) and (orientation: landscape) {
   body {
-    align-items: center;
-    padding-top: 10px;
+   
   }
 
   .main {
@@ -319,7 +277,6 @@ button:focus, .btn-logout:focus {
   }
 }
 
-/* Animações e transições suaves */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -335,7 +292,6 @@ button:focus, .btn-logout:focus {
   animation: fadeIn 0.5s ease-out;
 }
 
-/* Melhorias para acessibilidade */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -344,7 +300,6 @@ button:focus, .btn-logout:focus {
   }
 }
 
-/* Dark mode support */
 @media (prefers-color-scheme: dark) {
   body {
     background: linear-gradient(135deg, #2c3e50, #34495e);

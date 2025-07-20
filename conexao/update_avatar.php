@@ -1,23 +1,19 @@
 <?php
 session_start();
-require '../conexao/db.php';  // Conectar ao banco de dados
+require '../conexao/db.php';
 
-// Verificar se o usuário está logado
 if (!isset($_SESSION['user_id'])) {
     echo "Usuário não logado.";
     exit;
 }
 
-// Verificar se o novo avatar foi passado via POST
 if (isset($_POST['avatar'])) {
     $novoAvatar = $_POST['avatar'];
     $userId = $_SESSION['user_id'];
 
-    // Atualizar o avatar no banco de dados
-    $stmt = $mysqli->prepare("UPDATE users SET avatar = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE users SET avatar = ? WHERE id = ?");
     $stmt->bind_param("si", $novoAvatar, $userId);
 
-    // Verificar se a atualização foi bem-sucedida
     if ($stmt->execute()) {
         echo "Avatar atualizado com sucesso!";
     } else {
@@ -26,4 +22,3 @@ if (isset($_POST['avatar'])) {
 } else {
     echo "Avatar não fornecido.";
 }
-?>

@@ -1,8 +1,9 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+session_start(); // Inicia a sessão
 
-require 'db.php'; // Agora $conn está definido corretamente
+require 'db.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name     = $_POST['name'] ?? '';
@@ -11,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $avatar   = $_POST['avatar'] ?? '';
 
     if (!$name || !$email || !$password || !$avatar) {
-        header('Location: ../index.php?erro=campos');
+        $_SESSION['erro'] = 'campos';
+        header('Location: ../index.php');
         exit;
     }
 
@@ -30,18 +32,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssss", $name, $email, $hashedPassword, $avatar);
         $stmt->execute();
 
-        header('Location: ../app/login');
+        // Registro OK, limpa erros e redireciona
+        unset($_SESSION['erro']);
+        header('Location: ../app/login.php');
         exit;
 
     } catch (mysqli_sql_exception $e) {
         if (str_contains($e->getMessage(), 'Duplicate entry')) {
-            header('Location: ../index.php?erro=email');
+            $_SESSION['erro'] = 'email';
         } else {
-            header('Location: ../index.php?erro=geral');
+            $_SESSION['erro'] = 'geral';
         }
+        header('Location: ../index.php');
         exit;
     } catch (Exception $e) {
-        echo "Erro: " . $e->getMessage();
+        $_SESSION['erro'] = 'geral';
+        header('Location: ../index.php');
+        exit;
     }
 }
 ?>
