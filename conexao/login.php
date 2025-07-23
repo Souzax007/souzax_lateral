@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    $_SESSION['old'] = $_POST;
+    //$_SESSION['old'] = $_POST;
 
     if (!$email || !$password) {
         $_SESSION['erro_login'] = 'Preencha todos os campos.';
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_avatar'] = $row['avatar'];
 
             unset($_SESSION['erro_login']);
-            unset($_SESSION['old']);
+            //unset($_SESSION['old']);
             header("Location: ../index.php");
             exit;
         } else {

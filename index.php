@@ -122,54 +122,6 @@ $destino = $isLoggedIn ? 'app/perfil.php' : 'app/login.php';
   });
 </script>
 
-<script>
-  function toggleDropdown(event) {
-    event.preventDefault();
-    const parent = event.currentTarget.closest('.dropdown');
-    parent.classList.toggle('open');
-  }
-
-  document.addEventListener('click', function(e) {
-    if(e.target && e.target.id === 'link-registrar') {
-      e.preventDefault();
-      fetch('../app/registrar.php')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById("conteudoMain").innerHTML = html;
-
-          if (typeof setupAvatarModal === 'function') {
-            setupAvatarModal();
-            initAvatarModal();
-          }
-        })
-        .catch(err => console.log('Erro ao carregar registrar.php:', err));
-    }
-  });
-
-  function toggleDropdown(event) {
-    event.preventDefault();
-    const parent = event.currentTarget.closest('.dropdown');
-    parent.classList.toggle('open');
-  }
-
-  document.addEventListener('click', function(e) {
-    if(e.target && e.target.id === 'link-registrar') {
-      e.preventDefault();
-      fetch('../app/registrar.php')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById("conteudoMain").innerHTML = html;
-
-          if (typeof setupAvatarModal === 'function') {
-            setupAvatarModal();
-            initAvatarModal();
-          }
-        })
-        .catch(err => console.log('Erro ao carregar registrar.php:', err));
-    }
-  });
-</script>
-
  <script src="js/script.js"></script>
  <script src="js/modal_r.js"></script>
  <script src="js/perfil.js"></script>

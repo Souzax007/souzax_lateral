@@ -1,54 +1,68 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-session_start(); // Inicia a sessão
+session_start();
 
-require 'db.php'; 
+require 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $name     = $_POST['name'] ?? '';
     $email    = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     $avatar   = $_POST['avatar'] ?? '';
 
-    if (!$name || !$email || !$password || !$avatar) {
-        $_SESSION['erro'] = 'campos';
-        header('Location: ../index.php');
-        exit;
-    }
+    //verifica se o email já está cadastrado
+    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    try {
-        if (!isset($conn)) {
-            throw new Exception("Conexão com banco de dados não estabelecida.");
-        }
+    $userExiste = ($result->num_rows > 0) ? true : false; 
 
+    //insere o novo usuário no banco de dados
+    if(!$userExiste) { 
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("INSERT INTO users (name, email, password, avatar) VALUES (?, ?, ?, ?)");
-        if (!$stmt) {
-            throw new Exception("Erro na preparação: " . $conn->error);
-        }
-
         $stmt->bind_param("ssss", $name, $email, $hashedPassword, $avatar);
         $stmt->execute();
+    
+        //verifica se a inserção foi bem-sucedida
+        if ($stmt->affected_rows > 0) {
 
-        // Registro OK, limpa erros e redireciona
-        unset($_SESSION['erro']);
-        header('Location: ../app/login.php');
-        exit;
-
-    } catch (mysqli_sql_exception $e) {
-        if (str_contains($e->getMessage(), 'Duplicate entry')) {
-            $_SESSION['erro'] = 'email';
+            $_SESSION['success_registro'] = 'Usuário cadastrado com sucesso!';
+        echo"teste ";
+            exit;
         } else {
-            $_SESSION['erro'] = 'geral';
+
+            $_SESSION['erro_registro'] = 'Erro ao cadastrar usuário. Tente novamente.';
+            echo"Erro ao cadastrar usuário. Tente novamente.";
+            exit;
         }
-        header('Location: ../index.php');
-        exit;
-    } catch (Exception $e) {
-        $_SESSION['erro'] = 'geral';
-        header('Location: ../index.php');
-        exit;
     }
 }
+
 ?>
+<script>
+    var user_existe = <?php echo $userExiste; ?>;
+    document.addEventListener('DOMContentLoaded', function() {
+          
+        if (user_existe) {
+           // header('Location: ./app/registrar.php');
+            //alert('Email já cadastrado. Por favor, tente outro.');
+   
+            const url = '../app/registrar.php';
+            fetch(url)
+            .then(res => res.text())
+            .then(html => {
+            document.getElementById("conteudoMain").innerHTML = html;
+
+            })
+            .catch(err => console.error('Erro ao carregar tela:', err));
+        } else {
+            alert('Usuário cadastrado com sucesso!');
+            //window.location.href = '../app/registrar.php';
+        }
+    });
+</script>
